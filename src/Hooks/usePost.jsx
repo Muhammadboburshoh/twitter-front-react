@@ -1,37 +1,55 @@
 import { useEffect, useState } from "react"
 
-const usePost = () => {
+const serviseURL = 'http://localhost:5000/'
+
+const usePost = (path) => {
 
   const [ loading, setLoading ] = useState(false)
   const [ error, setError ] = useState(null)
+  const [ data, setData] = useState(null)
+  const [ body, setBody] = useState(null)
 
   useEffect( () => {
 
-    // setLoading(true)
-    ;(async() => {
+    if(body) {
 
-      try {
-
-        const response = await fetch('http://localhost:5000/user/signin')
-        console.log(response);
-
-        if(response.status >= 200 && response.status <= 299) {
-
-        } else {
-          throw new Error(response.statusText || response.status)
+      ;(async() => {
+        setLoading(true)
+  
+        try {
+  
+          const response = await fetch(serviseURL + path, {
+            method: 'POST',
+            headers: {
+              'Content-Type': "application/json",
+            },
+            body: JSON.stringify(body)
+          })
+  
+          if(response.status >= 200 && response.status <= 299) {
+  
+            setLoading(false)
+            setData(await response.json())
+          } else {
+            throw new Error(response.statusText || response.status)
+          }
+  
+        } catch(e) {
+          setLoading(false)
+          setError(e.message)
         }
+  
+      })()
+    }
 
-      } catch(e) {
-        console.log(e.message);
-      }
 
-    })()
+  }, [body, path])
 
-  }, [])
     return {
       loading,
       error,
-      data: null
+      data,
+      post: setBody
     }
 }
 
