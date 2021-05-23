@@ -3,9 +3,9 @@ import IO from 'socket.io-client'
 
 const Context =  createContext()
 
-const Provider = ({children}) => {
+const Provider = ({url, children}) => {
 
-  const socket = IO('http://localhost:5000/main', {
+  const socket = IO(url, {
     transports: ['websocket',],
     path: '/socket'
   })

@@ -4,10 +4,11 @@ import App from './App.jsx'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import { Provider as Socket } from "./Context/Socket"
 
+const socketURL = "http://localhost:5000/main"
 
 ReactDOM.render(
   <React.StrictMode>
-    <Socket>
+    <Socket url={socketURL}>
       <App />
     </Socket>
   </React.StrictMode>,
