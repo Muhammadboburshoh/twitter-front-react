@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
 
     socket.on('reseive_message', message => {
-      setMessages((value) => [message, ...value])
+      setMessages((existedMessages) => [...existedMessages, message])
     })
 
   }, [socket])
@@ -21,7 +21,12 @@ function App() {
     <>
       <input type="text" onKeyUp={(e) => setMessage(e.target.value)} />
 
-      <button onClick={() => socket.emit('send_mesage', message)}>Send</button>
+      <button onClick={() => {
+
+        socket.emit('send_mesage', message)
+
+        setMessages([...messages, message])
+      }}>Send</button>
 
       {
         messages.map((m, i) => (
